@@ -272,6 +272,7 @@ class AbstractDataTest extends TestCase
     }
 
     /**
+     * @dataProvider hyvaThemeChainProvider
      * @param string[] $codes
      */
     #[DataProvider('hyvaThemeChainProvider')]
@@ -286,8 +287,8 @@ class AbstractDataTest extends TestCase
 
     public function testCheckHyvaThemeFallsBackToConfiguredThemeChain(): void
     {
-        $provider = $this->createStub(ThemeProviderInterface::class);
-        $provider->method('getThemeById')->with(7)->willReturn(
+        $provider = $this->createMock(ThemeProviderInterface::class);
+        $provider->expects($this->once())->method('getThemeById')->with(7)->willReturn(
             $this->buildThemeChain(['Acme/grandchild', 'Acme/child', 'Hyva/default'])
         );
         $this->objectManagerMock->method('get')->willReturnCallback(
@@ -299,8 +300,8 @@ class AbstractDataTest extends TestCase
                 return $provider;
             }
         );
-        $store = $this->createStub(Store::class);
-        $store->method('getConfig')->with('design/theme/theme_id')->willReturn('7');
+        $store = $this->createMock(Store::class);
+        $store->expects($this->once())->method('getConfig')->with('design/theme/theme_id')->willReturn('7');
         $this->storeManagerMock->method('getStore')->willReturn($store);
 
         $this->assertTrue($this->abstractData->checkHyvaTheme());

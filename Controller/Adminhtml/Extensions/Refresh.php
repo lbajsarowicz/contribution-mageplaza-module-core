@@ -76,8 +76,11 @@ class Refresh extends Action implements HttpPostActionInterface
                 ]);
             }
             $listing = $this->_view->getLayout()
-                ->createBlock(\Mageplaza\Core\Block\Adminhtml\Extensions\Listing::class)
-                ->setTemplate('Mageplaza_Core::extensions/listing.phtml');
+                ->createBlock(
+                    \Mageplaza\Core\Block\Adminhtml\Extensions\Listing::class,
+                    '',
+                    ['data' => ['template' => 'Mageplaza_Core::extensions/listing.phtml']]
+                );
             return $result->setData([
                 'success' => true, 'retry_after' => $this->provider->getRefreshRetryAfter(),
                 'html' => $listing->toHtml()
