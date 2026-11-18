@@ -20,6 +20,9 @@
       "Mageplaza\\Core\\": ""
     }
   },
+  "require": {
+    "magewirephp/magewire": "^1.13"
+  },
   "require-dev": {
     "magento/magento-coding-standard": "^41",
     "phpstan/phpstan": "^2.1",
